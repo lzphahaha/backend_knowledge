@@ -314,5 +314,19 @@ RDB更适合做冷备，AOF更适合做热备。
  ![avatar](../pict/21.PNG)
 
 
-## 25、RDB与AOF对比？
+## 25、Redis主从模式。
+答：
+作用：1、读写分离，性能扩展；2、容灾快速恢复  
+ ![avatar](../pict/22.png)
+
+启动一台slave 的时候，他会发送一个psync命令给master ，如果是这个slave第一次连接到master，他会触发一个全量复制。master就会启动一个线程，生成RDB快照，还会把新的写请求都缓存在内存中，RDB文件生成后，master会将这个RDB发送给slave的，slave拿到之后做的第一件事情就是写进本地的磁盘，然后加载进内存，然后master会把内存里面缓存的那些新命名都发给slave。
+
+
+
+## 26、Redis哨兵（Sentinel）模式是什么？
+答：
+ ![avatar](../pict/23.png)
+
+迁移主机时哪一台从服务器，其优先级根据为：1、首先比较各服务器conf文件里参数slave-priority的值；2、当优先级值一样时，自动判断并选择偏移量最大（数据最全，获得原主数据最多）的那台；3、选择runid最小的那台，每个redis实例启动后都会随机生成一个runid。
+
 
